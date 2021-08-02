@@ -1,38 +1,114 @@
-.start{
-    background-color: rgb(45,50,55);
+.start {
+    background-color: rgb(45, 50, 55);
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.izgled{
+
+.izgled {
     display: flex;
     border: 1px white solid;
     flex-direction: column;
     margin: 5px;
 }
-.basicInfo{
+
+.basicInfo {
     display: flex;
     width: 100%;
 }
-.labela{
+
+.labela {
     display: flex;
     width: 50%;
     flex-direction: column;
     align-items: flex-end;
-    color: white;
     margin-right: 5px
 }
-.info{
+
+.info {
     display: flex;
     width: 50%;
     flex-direction: column;
     align-items: flex-start;
-    color: white;
 }
-.uredi{
+
+.sektori {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.setButton {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(45, 50, 55);
+    border-radius: 30px;
+}
+
+.confirm {
+    background-color: rgb(5, 112, 5);
+    color: white;
+    height: 50px;
+    width: 100px;
+    border-radius: 30px;
+}
+
+.deny {
+    background-color: red;
+    color: white;
+    height: 50px;
+    width: 100px;
+    border-radius: 30px;
+}
+
+.endForme {
+    display: flex;
+    justify-content: center;
+}
+
+.spacer {
+    width: 20px;
+}
+
+.specialFont {
+    font-size: 40px;
+}
+
+.formFont {
+    font-size: 20px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.uredi {
     margin-top: 0px;
 }
-.colorMeBlind{
-    color: white;
+
+.colorMeBlind {
     text-align: center;
+}
+
+.whiteFont {
+    color: white;
+}
+
+.celaForma {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.formUnos {
+    background-color: rgb(45, 50, 55);
+}
+
+.space {
+    margin-bottom: 20px;
+}
+
+.nestani {
+    display: none;
 }
