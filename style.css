@@ -41,9 +41,10 @@
 
 .setButton {
     width: 100px;
-    height: 100px;
+    min-height: 100px;
     background-color: rgb(45, 50, 55);
     border-radius: 30px;
+    margin: 5px;
 }
 
 .confirm {
@@ -62,6 +63,14 @@
     border-radius: 30px;
 }
 
+.azur {
+    background-color: rgb(145, 171, 0);
+    color: white;
+    height: 50px;
+    width: 100px;
+    border-radius: 30px;
+}
+
 .endForme {
     display: flex;
     justify-content: center;
@@ -73,10 +82,16 @@
 
 .specialFont {
     font-size: 40px;
+    order: 2;
 }
 
 .formFont {
     font-size: 20px;
+}
+
+.prikazButton {
+    font-size: 18px;
+    word-break: break-all;
 }
 
 button:hover {

@@ -30,7 +30,7 @@ export class Firma {
         this.crtajBasicInfo();
         //prelazimo na sektore
         elem = document.createElement("h2");
-        elem.innerHTML = "Sektori firme";
+        elem.innerHTML = "Sektori:";
         elem.classList.add("colorMeBlind");
         elem.classList.add("whiteFont");
         this.container.appendChild(elem);
@@ -90,16 +90,18 @@ export class Firma {
         this.container.appendChild(elem);
     }
     dodajSektor(sektor) {
+        sektor.bigFirma = this;
         this.sektori.push(sektor);
     }
     crtajSektore() {
         var sektelem = document.createElement("div");
         sektelem.classList.add("sektori");
-
+        this.container.appendChild(sektelem);
         var elem;
         //dodavanje gotovih sektora
         this.sektori.forEach(x => {
 
+                x.crtajSebe(this.container);
             })
             //dodavanje novih sektora
         elem = document.createElement("button");
@@ -108,98 +110,118 @@ export class Firma {
         elem.classList.add("specialFont");
         elem.innerHTML = "+";
         elem.onclick = ev => {
-            sektelem.classList.add("nestani");
-            var wholeForm = document.createElement("div");
-            wholeForm.classList.add("celaForma");
-            var formZaUnos = document.createElement("div");
-            formZaUnos.classList.add("basicInfo");
-            //levi deo forme za unos
-            var redic = document.createElement("div");
-            redic.classList.add("labela");
-            var elemen = document.createElement("label");
-            elemen.innerHTML = "Unesite naziv sektora: ";
-            elemen.classList.add("whiteFont");
-            elemen.classList.add("formFont");
-            elemen.classList.add("space");
-            redic.appendChild(elemen);
-            elemen = document.createElement("label");
-            elemen.innerHTML = "Unesite zahtevani budget: ";
-            elemen.classList.add("whiteFont");
-            elemen.classList.add("formFont");
-            elemen.classList.add("space");
-            redic.appendChild(elemen);
-
-            elemen = document.createElement("label");
-            elemen.innerHTML = "Unesite kratak opis sektora: ";
-            elemen.classList.add("whiteFont");
-            elemen.classList.add("formFont");
-            elemen.classList.add("space");
-            redic.appendChild(elemen);
-            formZaUnos.appendChild(redic);
-            //kraj levog dela forme za unos
-            //pocekat desnog dela forme za unos
-            redic = document.createElement("div");
-            redic.classList.add("info");
-
-            elemen = document.createElement("input");
-            elemen.classList.add("nazivSektora");
-            elemen.classList.add("space");
-            elemen.classList.add("formUnos");
-            elemen.classList.add("whiteFont");
-            redic.appendChild(elemen);
-            elemen = document.createElement("input");
-            elemen.classList.add("budgetSektora");
-            elemen.classList.add("space");
-            elemen.type = "number";
-            elemen.classList.add("formUnos");
-            elemen.classList.add("whiteFont");
-            elemen.placeholder = "Max budget je " + this.maxBudget;
-            redic.appendChild(elemen);
-
-            elemen = document.createElement("textarea");
-            elemen.classList.add("opisSektora");
-            elemen.classList.add("space");
-            elemen.classList.add("formUnos");
-            elemen.classList.add("whiteFont");
-            elemen.rows = "4";
-            redic.appendChild(elemen);
-            formZaUnos.appendChild(redic);
-            //kraj desnog dela forme
-            wholeForm.appendChild(formZaUnos);
-            redic = document.createElement("div");
-            redic.classList.add("endForme");
-            elemen = document.createElement("button");
-            elemen.innerHTML = "Dodaj sektor";
-            elemen.classList.add("confirm");
-            elemen.onclick = ev => {
-                alert("simulacija dodato");
-                sektelem.classList.remove("nestani");
-                this.container.removeChild(wholeForm);
-            }
-            redic.appendChild(elemen);
-            elemen = document.createElement("div");
-            elemen.classList.add("spacer");
-            redic.appendChild(elemen);
-
-            elemen = document.createElement("button");
-            elemen.innerHTML = "Otkazi";
-            elemen.classList.add("deny");
-            elemen.onclick = ev => {
-                alert("Cancel");
-                sektelem.classList.remove("nestani");
-                this.container.removeChild(wholeForm);
-            }
-            redic.appendChild(elemen);
-            elemen = document.createElement("div");
-            elemen.classList.add("spacer");
-
-            wholeForm.appendChild(redic);
-            this.container.appendChild(wholeForm);
+            this.dodavanjeNovogForma(sektelem);
         }
         sektelem.appendChild(elem);
 
 
         this.container.appendChild(sektelem);
     }
+    dodavanjeNovogForma(crtaj) {
+        crtaj.classList.add("nestani");
+        var wholeForm = document.createElement("div");
+        wholeForm.classList.add("celaForma");
+        var formZaUnos = document.createElement("div");
+        formZaUnos.classList.add("basicInfo");
+        //levi deo forme za unos
+        var redic = document.createElement("div");
+        redic.classList.add("labela");
+        var elemen = document.createElement("label");
+        elemen.innerHTML = "Unesite naziv sektora: ";
+        elemen.classList.add("whiteFont");
+        elemen.classList.add("formFont");
+        elemen.classList.add("space");
+        redic.appendChild(elemen);
+        elemen = document.createElement("label");
+        elemen.innerHTML = "Unesite zahtevani budget: ";
+        elemen.classList.add("whiteFont");
+        elemen.classList.add("formFont");
+        elemen.classList.add("space");
+        redic.appendChild(elemen);
 
+        elemen = document.createElement("label");
+        elemen.innerHTML = "Unesite kratak opis sektora: ";
+        elemen.classList.add("whiteFont");
+        elemen.classList.add("formFont");
+        elemen.classList.add("space");
+        redic.appendChild(elemen);
+        formZaUnos.appendChild(redic);
+        //kraj levog dela forme za unos
+        //pocekat desnog dela forme za unos
+        redic = document.createElement("div");
+        redic.classList.add("info");
+
+        elemen = document.createElement("input");
+        elemen.classList.add("nazivSektora");
+        elemen.classList.add("space");
+        elemen.classList.add("formUnos");
+        elemen.classList.add("whiteFont");
+        redic.appendChild(elemen);
+        elemen = document.createElement("input");
+        elemen.classList.add("budgetSektora");
+        elemen.classList.add("space");
+        elemen.type = "number";
+        elemen.classList.add("formUnos");
+        elemen.classList.add("whiteFont");
+        elemen.placeholder = "Max budget je " + this.izracunajBudgetDostupan();
+        redic.appendChild(elemen);
+
+        elemen = document.createElement("textarea");
+        elemen.classList.add("opisSektora");
+        elemen.classList.add("space");
+        elemen.classList.add("formUnos");
+        elemen.classList.add("whiteFont");
+        elemen.rows = "4";
+        redic.appendChild(elemen);
+        formZaUnos.appendChild(redic);
+        //kraj desnog dela forme
+        wholeForm.appendChild(formZaUnos);
+        redic = document.createElement("div");
+        redic.classList.add("endForme");
+        elemen = document.createElement("button");
+        elemen.innerHTML = "Dodaj sektor";
+        elemen.classList.add("confirm");
+        elemen.onclick = ev => {
+            //alert("simulacija dodato");
+            var imeSek = formZaUnos.querySelector(".nazivSektora").value;
+            var budgetSek = parseInt(formZaUnos.querySelector(".budgetSektora").value);
+            var opisSek = formZaUnos.querySelector(".opisSektora").value;
+            if (budgetSek > this.izracunajBudgetDostupan()) {
+                alert("Premasili ste dostupan budget");
+            } else {
+                var sek = new Sektor(imeSek, budgetSek, opisSek);
+                this.dodajSektor(sek);
+                sek.crtajSebe(this.container);
+
+                crtaj.classList.remove("nestani");
+
+
+                this.container.removeChild(wholeForm);
+            }
+        }
+        redic.appendChild(elemen);
+        elemen = document.createElement("div");
+        elemen.classList.add("spacer");
+        redic.appendChild(elemen);
+
+        elemen = document.createElement("button");
+        elemen.innerHTML = "Otkazi";
+        elemen.classList.add("deny");
+        elemen.onclick = ev => {
+            crtaj.classList.remove("nestani");
+            this.container.removeChild(wholeForm);
+        }
+        redic.appendChild(elemen);
+
+        wholeForm.appendChild(redic);
+        this.container.appendChild(wholeForm);
+    }
+    izracunajBudgetDostupan() {
+        var helper = this.maxBudget;
+        this.sektori.forEach(x => {
+            helper = helper - x.budget;
+        })
+
+        return helper;
+    }
 }
