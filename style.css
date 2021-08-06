@@ -15,6 +15,7 @@
 .basicInfo {
     display: flex;
     width: 100%;
+    
 }
 
 .labela {
@@ -75,7 +76,11 @@
     display: flex;
     justify-content: center;
 }
-
+.backButton{
+    background-color: rgb(45, 50, 55);
+    border-radius: 30px;
+    margin: 10px;
+}
 .spacer {
     width: 20px;
 }
@@ -115,7 +120,10 @@ button:hover {
     flex-direction: column;
     margin-bottom: 20px;
 }
-
+.hint{
+    font-size: 12px;
+    margin-bottom: 6px;
+}
 .formUnos {
     background-color: rgb(45, 50, 55);
 }

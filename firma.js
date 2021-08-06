@@ -33,6 +33,8 @@ export class Firma {
         elem.innerHTML = "Sektori:";
         elem.classList.add("colorMeBlind");
         elem.classList.add("whiteFont");
+        elem.classList.add("naslovZaSektore");
+        
         this.container.appendChild(elem);
         this.crtajSektore();
 
@@ -85,9 +87,9 @@ export class Firma {
         elem.appendChild(leviElem);
         //dodavanje desnog dela
         elem.appendChild(desniElem);
-
         //dodavanje basic info
         this.container.appendChild(elem);
+
     }
     dodajSektor(sektor) {
         sektor.bigFirma = this;
@@ -101,16 +103,21 @@ export class Firma {
         //dodavanje gotovih sektora
         this.sektori.forEach(x => {
 
-                x.crtajSebe(this.container);
-            })
-            //dodavanje novih sektora
+            x.crtajSebe(this.container);
+        })
+        //dodavanje novih sektora
         elem = document.createElement("button");
         elem.classList.add("setButton");
         elem.classList.add("whiteFont");
         elem.classList.add("specialFont");
         elem.innerHTML = "+";
         elem.onclick = ev => {
-            this.dodavanjeNovogForma(sektelem);
+            if (this.izracunajBudgetDostupan() > 0) {
+                this.dodavanjeNovogForma(sektelem);
+            }
+            else {
+                alert("Nemate vise para u budgetu");
+            }
         }
         sektelem.appendChild(elem);
 
@@ -118,6 +125,7 @@ export class Firma {
         this.container.appendChild(sektelem);
     }
     dodavanjeNovogForma(crtaj) {
+        this.container.querySelector(".naslovZaSektore").classList.add("nestani");
         crtaj.classList.add("nestani");
         var wholeForm = document.createElement("div");
         wholeForm.classList.add("celaForma");
@@ -188,13 +196,18 @@ export class Firma {
             var opisSek = formZaUnos.querySelector(".opisSektora").value;
             if (budgetSek > this.izracunajBudgetDostupan()) {
                 alert("Premasili ste dostupan budget");
-            } else {
+            }
+            else if(imeSek.trim().length == 0 || opisSek.trim().length == 0 || budgetSek<=0 || Number.isNaN(budgetSek))
+            {
+                alert("greska");
+            }
+            else {
                 var sek = new Sektor(imeSek, budgetSek, opisSek);
                 this.dodajSektor(sek);
                 sek.crtajSebe(this.container);
 
                 crtaj.classList.remove("nestani");
-
+                this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
 
                 this.container.removeChild(wholeForm);
             }
@@ -209,6 +222,7 @@ export class Firma {
         elemen.classList.add("deny");
         elemen.onclick = ev => {
             crtaj.classList.remove("nestani");
+            this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
             this.container.removeChild(wholeForm);
         }
         redic.appendChild(elemen);
