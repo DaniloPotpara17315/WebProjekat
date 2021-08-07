@@ -79,7 +79,8 @@ export class Firma {
         desniElem.appendChild(elementic);
 
         elementic = document.createElement("h3");
-        elementic.innerHTML = this.maxBudget;
+        elementic.innerHTML = this.izracunajBudgetDostupan()+"/"+this.maxBudget;
+        elementic.classList.add("budgetic");
         elementic.classList.add("uredi");
         desniElem.appendChild(elementic);
 
@@ -114,6 +115,7 @@ export class Firma {
         elem.onclick = ev => {
             if (this.izracunajBudgetDostupan() > 0) {
                 this.dodavanjeNovogForma(sektelem);
+                
             }
             else {
                 alert("Nemate vise para u budgetu");
@@ -134,25 +136,16 @@ export class Firma {
         //levi deo forme za unos
         var redic = document.createElement("div");
         redic.classList.add("labela");
-        var elemen = document.createElement("label");
-        elemen.innerHTML = "Unesite naziv sektora: ";
-        elemen.classList.add("whiteFont");
-        elemen.classList.add("formFont");
-        elemen.classList.add("space");
-        redic.appendChild(elemen);
-        elemen = document.createElement("label");
-        elemen.innerHTML = "Unesite zahtevani budget: ";
-        elemen.classList.add("whiteFont");
-        elemen.classList.add("formFont");
-        elemen.classList.add("space");
-        redic.appendChild(elemen);
-
-        elemen = document.createElement("label");
-        elemen.innerHTML = "Unesite kratak opis sektora: ";
-        elemen.classList.add("whiteFont");
-        elemen.classList.add("formFont");
-        elemen.classList.add("space");
-        redic.appendChild(elemen);
+        var elemen;
+        var nizic = ["Unesite naziv sektora: ","Unesite zahtevani budget: ","Unesite kratak opis sektora: "];
+        nizic.forEach(x=>{
+            elemen= document.createElement("label");
+            elemen.innerHTML = x;
+            elemen.classList.add("whiteFont");
+            elemen.classList.add("formFont");
+            elemen.classList.add("space");
+            redic.appendChild(elemen);
+        })
         formZaUnos.appendChild(redic);
         //kraj levog dela forme za unos
         //pocekat desnog dela forme za unos
@@ -208,7 +201,7 @@ export class Firma {
 
                 crtaj.classList.remove("nestani");
                 this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
-
+                this.update();
                 this.container.removeChild(wholeForm);
             }
         }
@@ -237,5 +230,8 @@ export class Firma {
         })
 
         return helper;
+    }
+    update(){
+        (this.container.querySelector(".basicInfo")).querySelector(".budgetic").innerHTML=this.izracunajBudgetDostupan()+"/"+this.maxBudget;
     }
 }

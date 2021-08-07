@@ -4,7 +4,7 @@ export class Sektor {
         this.budget = budget;
         this.opis = opis;
         this.container = null;
-        this.form=null;
+        this.form = null;
         this.izgled = null;
         this.radnici = [];
     }
@@ -29,7 +29,7 @@ export class Sektor {
         }
         this.izgled = elem;
         buttonSektor.appendChild(elem);
-        
+
     }
 
     formaSektora(nestali) {
@@ -85,6 +85,7 @@ export class Sektor {
             //prikazivanje forme za azuriranje
             actualInfo.classList.add("nestani");
             funkcijeSektora.classList.add("nestani");
+            extraRed.classList.add("nestani");
             var formUnos = document.createElement("div");
             formUnos.classList.add("info");
             var elementForme = document.createElement("input");
@@ -93,7 +94,7 @@ export class Sektor {
             elementForme.classList.add("space");
             elementForme.classList.add("formUnos");
             elementForme.classList.add("whiteFont");
-            
+
             formUnos.appendChild(elementForme);
             elementForme = document.createElement("input");
             elementForme.classList.add("budgetSektora");
@@ -105,7 +106,7 @@ export class Sektor {
             elementForme = document.createElement("label");
             elementForme.classList.add("whiteFont");
             elementForme.classList.add("hint");
-            elementForme.innerHTML="Dostupan budget: "+this.bigFirma.izracunajBudgetDostupan();
+            elementForme.innerHTML = "Budget: " + this.bigFirma.izracunajBudgetDostupan()+"/ Min: "+this.minBudget();
             formUnos.appendChild(elementForme);
             elementForme = document.createElement("textarea");
             elementForme.classList.add("opisSektora");
@@ -127,8 +128,11 @@ export class Sektor {
                 var imeSektora = formUnos.querySelector(".nazivSektora").value;
                 var budgetSek = parseInt(formUnos.querySelector(".budgetSektora").value);
                 var opisSek = formUnos.querySelector(".opisSektora").value;
-                if (budgetSek > +this.budget+this.bigFirma.izracunajBudgetDostupan()) {
+                if (budgetSek > +this.budget + this.bigFirma.izracunajBudgetDostupan()) {
                     alert("Nije moguc budget!");
+                }
+                else if (imeSektora.trim().length == 0 || opisSek.trim().length == 0 || budgetSek <= 0 || Number.isNaN(budgetSek) || budgetSek<this.minBudget()) {
+                    alert("greska");
                 }
                 else {
                     this.ime = imeSektora;
@@ -137,9 +141,11 @@ export class Sektor {
                     informacije.removeChild(formUnos);
                     this.form.removeChild(funkcijeAzur);
                     this.azurirajForm(actualInfo);
-                    this.izgled.innerHTML=this.ime;
+                    this.izgled.innerHTML = this.ime;
+                    this.bigFirma.update();
+                    extraRed.classList.remove("nestani");
                     actualInfo.classList.remove("nestani");
-                    funkcijeSektora.classList.remove("nestani");                 
+                    funkcijeSektora.classList.remove("nestani");
                 }
             }
             funkcijeAzur.appendChild(elementForme);
@@ -154,6 +160,7 @@ export class Sektor {
                 if (confirm("Da li zelite da otkazete akciju?")) {
                     informacije.removeChild(formUnos);
                     this.form.removeChild(funkcijeAzur);
+                    extraRed.classList.remove("nestani");
                     actualInfo.classList.remove("nestani");
                     funkcijeSektora.classList.remove("nestani");
                 }
@@ -177,6 +184,7 @@ export class Sektor {
                 });
                 nestali.removeChild(this.izgled);
                 nestali.classList.remove("nestani");
+                this.bigFirma.update();
                 this.container.removeChild(this.form);
                 this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
             }
@@ -188,6 +196,10 @@ export class Sektor {
     }
     postaviId(id) {
         this.id = id;
+    }
+    dodajRadnike(radnik) {
+        radnik.bigSektor = this;
+        this.radnici.push(radnik);
     }
     azurirajForm(kanvas) {
         while (kanvas.hasChildNodes()) {
@@ -206,8 +218,106 @@ export class Sektor {
         elem.classList.add("uredi");
         kanvas.appendChild(elem);
     }
-    crtajRadnike()
-    {
+    crtajRadnike() {
+        var radniciForm = document.createElement("div");
+        radniciForm.classList.add("deoZaRadnike");
+        var naslov = document.createElement("h2");
+        naslov.innerHTML = "Radnici:";
+        naslov.classList.add("colorMeBlind");
+        naslov.classList.add("whiteFont");
+        naslov.classList.add("naslovZaRadnike");
+        var radnikElem = document.createElement("div");
+        radnikElem.classList.add("radnici");
+        this.container.appendChild(radnikElem);
+        var elem;
+        this.radnici.forEach(x => {
+            x.crtajSebe(radniciForm);
+        })
+        elem = document.createElement("button");
+        elem.classList.add("radButton");
+        elem.classList.add("whiteFont");
+        elem.classList.add("specialFontv2");
+        elem.innerHTML = "+";
+        elem.onclick = ev => {
+            if (this.izracunajBudgetDostupan() > 0) {
+                this.dodavanjeNovogForma(radniciForm);
+            }
+            else {
+                alert("Nemate vise para u budgetu");
+            }
+        }
+        radnikElem.appendChild(elem);
+        radniciForm.appendChild(naslov);
+        radniciForm.appendChild(radnikElem);
+        this.form.appendChild(radniciForm);
+    }
+    izracunajBudgetDostupan() {
+        var helper = this.budget;
+        this.radnici.forEach(x => {
+            helper = helper - x.plata;
+        })
 
+        return helper;
+    }
+    minBudget(){
+        var helper = 0;
+        this.radnici.forEach(x=>{
+            helper = helper+x.plata;
+        })
+        return helper;
+    }
+    dodavanjeNovogForma(kanvas){
+        var formNovRadnik = document.createElement("div");
+        formNovRadnik.classList.add("basicInfo");
+        var leviDeo = document.createElement("div");
+        leviDeo.classList.add("labela");
+        var element;
+        var nizic = ["Unesite ime radnika: ","Unesite prezime radnika: ","Izaberite rank radnika: ","Unesite platu radnika: "];
+        nizic.forEach(x=>{
+            element= document.createElement("label");
+            element.innerHTML = x;
+            element.classList.add("whiteFont");
+            element.classList.add("formFont");
+            element.classList.add("space");
+            leviDeo.appendChild(element);
+        });
+        var desniDeo = document.createElement("div");
+        desniDeo.classList.add("info");
+        element = document.createElement("input");
+        element.classList.add("imeRadnika");
+        element.classList.add("space");
+        element.classList.add("formUnos");
+        element.classList.add("whiteFont");
+        desniDeo.appendChild(element);
+        element = document.createElement("input");
+        element.classList.add("prezimeRadnika");
+        element.classList.add("space");
+        element.classList.add("formUnos");
+        element.classList.add("whiteFont");
+        desniDeo.appendChild(element);
+        element = document.createElement("div");
+        element.classList.add("red");
+        desniDeo.appendChild(element);
+        nizic = ["Sef","Menadzer","Radnik"];
+        nizic.forEach(x=>{
+            var radElem = document.createElement("input");
+            radElem.type="radio";
+            radElem.name="rank";
+            radElem.value = x;
+            element.appendChild(radElem);
+            radElem = document.createElement("label");
+            radElem.innerHTML=x;
+            element.appendChild(radElem);
+        });
+        element = document.createElement("input");
+        element.type="number";
+        element.classList.add("plataRadnika");
+        element.classList.add("space");
+        element.classList.add("formUnos");
+        element.classList.add("whiteFont");
+        desniDeo.appendChild(element);
+        formNovRadnik.appendChild(leviDeo);
+        formNovRadnik.appendChild(desniDeo);
+        kanvas.appendChild(formNovRadnik);
     }
 }

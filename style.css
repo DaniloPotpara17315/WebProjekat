@@ -39,7 +39,16 @@
     justify-content: center;
     margin-bottom: 20px;
 }
-
+.red{
+    display: flex;
+    flex-wrap: wrap;
+}
+.radnici{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 .setButton {
     width: 100px;
     min-height: 100px;
@@ -47,7 +56,13 @@
     border-radius: 30px;
     margin: 5px;
 }
-
+.radButton{
+    width: 100px;
+    min-height: 60px;
+    background-color: rgb(45, 50, 55);
+    border-radius: 30px;
+    margin: 5px;
+}
 .confirm {
     background-color: rgb(5, 112, 5);
     color: white;
@@ -71,7 +86,12 @@
     width: 100px;
     border-radius: 30px;
 }
-
+.deoZaRadnike{
+    display: flex;
+    flex-direction: column;
+    order: 2;
+    width: 100%;
+}
 .endForme {
     display: flex;
     justify-content: center;
@@ -89,7 +109,10 @@
     font-size: 40px;
     order: 2;
 }
-
+.specialFontv2 {
+    font-size: 30px;
+    order: 2;
+}
 .formFont {
     font-size: 20px;
 }

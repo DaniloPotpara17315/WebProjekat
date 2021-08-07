@@ -5,4 +5,9 @@ export class Radnik{
         this.rank=rank;
         this.plata=plata;
     }
+    crtajSebe(host){
+        if(!host){
+            throw new Error("Nema hosta");
+        }
+    }
 }
