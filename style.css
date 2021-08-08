@@ -15,7 +15,6 @@
 .basicInfo {
     display: flex;
     width: 100%;
-    
 }
 
 .labela {
@@ -39,16 +38,20 @@
     justify-content: center;
     margin-bottom: 20px;
 }
-.red{
+
+.red {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 6px;
 }
-.radnici{
+
+.radnici {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 20px;
 }
+
 .setButton {
     width: 100px;
     min-height: 100px;
@@ -56,13 +59,15 @@
     border-radius: 30px;
     margin: 5px;
 }
-.radButton{
-    width: 100px;
+
+.radButton {
+    min-width: 100px;
     min-height: 60px;
     background-color: rgb(45, 50, 55);
     border-radius: 30px;
     margin: 5px;
 }
+
 .confirm {
     background-color: rgb(5, 112, 5);
     color: white;
@@ -86,33 +91,43 @@
     width: 100px;
     border-radius: 30px;
 }
-.deoZaRadnike{
+
+.deoZaRadnike {
     display: flex;
     flex-direction: column;
     order: 2;
     width: 100%;
 }
+
 .endForme {
     display: flex;
     justify-content: center;
 }
-.backButton{
+
+.backButton {
     background-color: rgb(45, 50, 55);
     border-radius: 30px;
     margin: 10px;
 }
+
 .spacer {
     width: 20px;
+}
+
+.topSpace {
+    margin-top: 20px;
 }
 
 .specialFont {
     font-size: 40px;
     order: 2;
 }
+
 .specialFontv2 {
     font-size: 30px;
     order: 2;
 }
+
 .formFont {
     font-size: 20px;
 }
@@ -143,10 +158,12 @@ button:hover {
     flex-direction: column;
     margin-bottom: 20px;
 }
-.hint{
+
+.hint {
     font-size: 12px;
     margin-bottom: 6px;
 }
+
 .formUnos {
     background-color: rgb(45, 50, 55);
 }

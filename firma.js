@@ -34,7 +34,7 @@ export class Firma {
         elem.classList.add("colorMeBlind");
         elem.classList.add("whiteFont");
         elem.classList.add("naslovZaSektore");
-        
+
         this.container.appendChild(elem);
         this.crtajSektore();
 
@@ -62,27 +62,16 @@ export class Firma {
         var desniElem = document.createElement("div");
         desniElem.classList.add("info");
         desniElem.classList.add("whiteFont");
-
-        elementic = document.createElement("h3");
-        elementic.innerHTML = this.naziv;
-        elementic.classList.add("uredi");
-        desniElem.appendChild(elementic);
-
-        elementic = document.createElement("h3");
-        elementic.innerHTML = this.tip;
-        elementic.classList.add("uredi");
-        desniElem.appendChild(elementic);
-
-        elementic = document.createElement("h3");
-        elementic.innerHTML = this.adresa;
-        elementic.classList.add("uredi");
-        desniElem.appendChild(elementic);
-
-        elementic = document.createElement("h3");
-        elementic.innerHTML = this.izracunajBudgetDostupan()+"/"+this.maxBudget;
-        elementic.classList.add("budgetic");
-        elementic.classList.add("uredi");
-        desniElem.appendChild(elementic);
+        nizic = [this.naziv, this.tip, this.adresa, this.izracunajBudgetDostupan() + "/" + this.maxBudget];
+        nizic.forEach((x, ind) => {
+            elementic = document.createElement("h3");
+            elementic.innerHTML = x;
+            if (ind === 3) {
+                elementic.classList.add("budgetic");
+            }
+            elementic.classList.add("uredi");
+            desniElem.appendChild(elementic);
+        })
 
         //dodavanje levog dela
         elem.appendChild(leviElem);
@@ -104,9 +93,9 @@ export class Firma {
         //dodavanje gotovih sektora
         this.sektori.forEach(x => {
 
-            x.crtajSebe(this.container);
-        })
-        //dodavanje novih sektora
+                x.crtajSebe(this.container);
+            })
+            //dodavanje novih sektora
         elem = document.createElement("button");
         elem.classList.add("setButton");
         elem.classList.add("whiteFont");
@@ -115,9 +104,8 @@ export class Firma {
         elem.onclick = ev => {
             if (this.izracunajBudgetDostupan() > 0) {
                 this.dodavanjeNovogForma(sektelem);
-                
-            }
-            else {
+
+            } else {
                 alert("Nemate vise para u budgetu");
             }
         }
@@ -137,9 +125,9 @@ export class Firma {
         var redic = document.createElement("div");
         redic.classList.add("labela");
         var elemen;
-        var nizic = ["Unesite naziv sektora: ","Unesite zahtevani budget: ","Unesite kratak opis sektora: "];
-        nizic.forEach(x=>{
-            elemen= document.createElement("label");
+        var nizic = ["Unesite naziv sektora: ", "Unesite zahtevani budget: ", "Unesite kratak opis sektora: "];
+        nizic.forEach(x => {
+            elemen = document.createElement("label");
             elemen.innerHTML = x;
             elemen.classList.add("whiteFont");
             elemen.classList.add("formFont");
@@ -189,12 +177,9 @@ export class Firma {
             var opisSek = formZaUnos.querySelector(".opisSektora").value;
             if (budgetSek > this.izracunajBudgetDostupan()) {
                 alert("Premasili ste dostupan budget");
-            }
-            else if(imeSek.trim().length == 0 || opisSek.trim().length == 0 || budgetSek<=0 || Number.isNaN(budgetSek))
-            {
+            } else if (imeSek.trim().length == 0 || opisSek.trim().length == 0 || budgetSek <= 0 || Number.isNaN(budgetSek)) {
                 alert("greska");
-            }
-            else {
+            } else {
                 var sek = new Sektor(imeSek, budgetSek, opisSek);
                 this.dodajSektor(sek);
                 sek.crtajSebe(this.container);
@@ -231,7 +216,7 @@ export class Firma {
 
         return helper;
     }
-    update(){
-        (this.container.querySelector(".basicInfo")).querySelector(".budgetic").innerHTML=this.izracunajBudgetDostupan()+"/"+this.maxBudget;
+    update() {
+        (this.container.querySelector(".basicInfo")).querySelector(".budgetic").innerHTML = this.izracunajBudgetDostupan() + "/" + this.maxBudget;
     }
 }
