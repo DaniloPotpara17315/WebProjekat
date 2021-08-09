@@ -45,6 +45,11 @@
     margin-top: 6px;
 }
 
+.redV2 {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .radnici {
     display: flex;
     flex-wrap: wrap;

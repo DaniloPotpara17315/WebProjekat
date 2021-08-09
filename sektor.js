@@ -27,10 +27,11 @@ export class Sektor {
             this.container.querySelector(".naslovZaSektore").classList.add("nestani");
             this.formaSektora(buttonSektor);
             this.crtajRadnike();
-
+            console.log(this);
         }
         this.izgled = elem;
         buttonSektor.appendChild(elem);
+
     }
 
     formaSektora(nestali) {
@@ -185,7 +186,7 @@ export class Sektor {
         elem.onclick = ev => {
             if (confirm("Da li ste sigurni da zelite da obrisete sektor?")) {
                 this.bigFirma.sektori = this.bigFirma.sektori.filter(x => {
-                    return x.ime !== this.ime && x.budget !== this.budget;
+                    return x !== this;
                 });
                 nestali.removeChild(this.izgled);
                 nestali.classList.remove("nestani");
