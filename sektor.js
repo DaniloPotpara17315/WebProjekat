@@ -27,7 +27,6 @@ export class Sektor {
             this.container.querySelector(".naslovZaSektore").classList.add("nestani");
             this.formaSektora(buttonSektor);
             this.crtajRadnike();
-            console.log(this);
         }
         this.izgled = elem;
         buttonSektor.appendChild(elem);
@@ -41,6 +40,7 @@ export class Sektor {
         this.form = formica;
         var extraRed = document.createElement("div");
         extraRed.classList.add("endForme");
+        //back button
         var buttonBack = document.createElement("button");
         buttonBack.innerHTML = "<-";
         buttonBack.classList.add("backButton");
@@ -349,7 +349,7 @@ export class Sektor {
             if (plataRad > this.izracunajBudgetDostupan()) {
                 alert("Nemoguca plata");
             } else if (imeRad.trim().length == 0 || prezimeRad.trim().length == 0 || plataRad <= 0 || Number.isNaN(plataRad) || rankRad == null) {
-                alert("greska");
+                alert("Greska prilikom unosa");
             } else {
                 var rad = new Radnik(imeRad, prezimeRad, rankRad.value, plataRad);
                 this.dodajRadnike(rad);
@@ -385,18 +385,16 @@ export class Sektor {
         (this.form.querySelector(".infoSektora")).querySelector(".budgetSektora").innerHTML = this.izracunajBudgetDostupan() + "/" + this.budget;
     }
     onemoguci() {
-        var dete = (this.form.querySelector(".deoZaRadnike")).querySelector(".radnici").firstChild;
-        while (dete != null) {
-            dete.disabled = true;
-            dete = dete.nextSibling;
-        }
+        this.radnici.map(x=>{
+            x.izgled.disabled=true;
+        })
+        this.form.querySelector(".deoZaRadnike").querySelector(".radnici").querySelector(".specialFontv2").disabled=true;
     }
     omoguci() {
-        var dete = (this.form.querySelector(".deoZaRadnike")).querySelector(".radnici").firstChild;
-        while (dete != null) {
-            dete.disabled = false;
-            dete = dete.nextSibling;
-        }
+        this.radnici.map(x=>{
+            x.izgled.disabled=false;
+        })
+        this.form.querySelector(".deoZaRadnike").querySelector(".radnici").querySelector(".specialFontv2").disabled=false;
     }
     nestaniDugmici() {
         this.form.querySelector(".funkcijeSektora").classList.add("nestani");

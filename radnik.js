@@ -39,6 +39,7 @@ export class Radnik {
         buttonBack.classList.add("backButton");
         buttonBack.classList.add("whiteFont");
         buttonBack.classList.add("prikazButton");
+        buttonBack.classList.add("backRadnik");
         buttonBack.onclick = ev => {
             this.container.removeChild(formaRadnika);
             nestani.classList.remove("nestani");
@@ -86,6 +87,7 @@ export class Radnik {
         dugmici.innerHTML = "Azuriraj";
         dugmici.classList.add("azur");
         dugmici.onclick = ev => {
+            kanvas.querySelector(".backRadnik").classList.add("nestani");
             zamena.classList.add("nestani");
             zadnjiDeo.classList.add("nestani");
             var unosInfo = document.createElement("div");
@@ -151,7 +153,7 @@ export class Radnik {
                 if (plataRad > this.bigSektor.izracunajBudgetDostupan() + this.plata) {
                     alert("Nemoguca plata");
                 } else if (imeRad.trim().length == 0 || prezimeRad.trim().length == 0 || plataRad <= 0 || Number.isNaN(plataRad) || rankRad == null) {
-                    alert("greska");
+                    alert("Greska prilikom unosa");
                 } else {
 
                     this.ime = imeRad;
@@ -163,6 +165,7 @@ export class Radnik {
                     this.azurFormu(zamena);
                     modulator.removeChild(unosInfo);
                     kanvas.removeChild(funkRadnika);
+                    kanvas.querySelector(".backRadnik").classList.remove("nestani");
                     zamena.classList.remove("nestani");
                     zadnjiDeo.classList.remove("nestani");
 
@@ -178,6 +181,7 @@ export class Radnik {
             dugmici.onclick = ev => {
                 modulator.removeChild(unosInfo);
                 kanvas.removeChild(funkRadnika);
+                kanvas.querySelector(".backRadnik").classList.remove("nestani");
                 zamena.classList.remove("nestani");
                 zadnjiDeo.classList.remove("nestani");
             }
@@ -204,7 +208,9 @@ export class Radnik {
                 (this.container.querySelector(".radnici")).classList.remove("nestani");
 
                 this.bigSektor.update();
+                this.bigSektor.pojaviDugmici();
                 this.container.removeChild(kanvas);
+                kanvas.querySelector(".backRadnik").classList.remove("nestani");
                 this.container.querySelector(".naslovZaRadnike").classList.remove("nestani");
             }
         };

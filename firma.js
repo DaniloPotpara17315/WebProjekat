@@ -178,7 +178,7 @@ export class Firma {
             if (budgetSek > this.izracunajBudgetDostupan()) {
                 alert("Premasili ste dostupan budget");
             } else if (imeSek.trim().length == 0 || opisSek.trim().length == 0 || budgetSek <= 0 || Number.isNaN(budgetSek)) {
-                alert("greska");
+                alert("Greska prilikom unosa");
             } else {
                 var sek = new Sektor(imeSek, budgetSek, opisSek);
                 this.dodajSektor(sek);
