@@ -230,4 +230,7 @@ export class Radnik {
             komponenta.appendChild(elem);
         });
     }
+    postaviId(id) {
+        this.id = id;
+    }
 }

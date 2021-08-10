@@ -10,5 +10,12 @@ namespace BackEnd.Models{
         public FirmaContext(DbContextOptions options) :base(options){
             
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder){
+            modelBuilder.Entity<Sektor>().HasMany(x=>
+                x.Radnici
+            ).WithOne(y => y.Sektor)
+            .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

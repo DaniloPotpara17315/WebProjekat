@@ -6,6 +6,7 @@ using BackEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace BackEnd.Controllers
 {
@@ -23,24 +24,28 @@ namespace BackEnd.Controllers
         [Route("VratiFirme")]
         [HttpGet]
         public async Task<List<Firma>> VratiFirme(){
-            return await Context.Firme.Include(s => s.Sektori).ToListAsync();
+            return await Context.Firme.Include(s => s.Sektori).ThenInclude(x=>x.Radnici).ToListAsync();
         }
 
         [Route("UnesiFirmu")]
         [HttpPost]
-        public async Task UnesiFirmu([FromBody] Firma firma){
+        public async Task UnesiFirmu([FromBody] Firma firma)
+        {
             Context.Firme.Add(firma);
             await Context.SaveChangesAsync();
+
         }
 
         [Route("UnesiSektor/{idFirme}")]
         [HttpPost]
-        public async Task UnesiSektor(int idFirme,[FromBody]Sektor sektor){
+        public async Task<IActionResult> UnesiSektor(int idFirme,[FromBody]Sektor sektor){
 
             var firma = await Context.Firme.FindAsync(idFirme);
             sektor.Firma = firma;
             Context.Sektori.Add(sektor);
             await Context.SaveChangesAsync();
+            int id = sektor.ID;
+            return Ok(new {value =id});
         }
 
 
@@ -55,19 +60,21 @@ namespace BackEnd.Controllers
         [Route("ObrisiSektor/{id}")]
         [HttpDelete]
         public async Task ObrisiSektor(int id){
-            var sekt = Context.Sektori.FindAsync(id);
+            var sekt = await Context.Sektori.FindAsync(id);
             Context.Remove(sekt);
             await Context.SaveChangesAsync();
         }
 
         [Route("UnesiRadnika/{idSektora}")]
         [HttpPost]
-        public async Task UnesiRadnika(int idSektora,[FromBody]Radnik radnik){
+        public async Task<int> UnesiRadnika(int idSektora,[FromBody]Radnik radnik){
 
             var sekt = await Context.Sektori.FindAsync(idSektora);
             radnik.Sektor = sekt;
             Context.Radnici.Add(radnik);
             await Context.SaveChangesAsync();
+            int id = radnik.ID;
+            return id;
         }
 
         [Route("IzmeniRadnika")]
@@ -81,9 +88,14 @@ namespace BackEnd.Controllers
         [Route("ObrisiRadnika/{id}")]
         [HttpDelete]
         public async Task ObrisiRadnika(int id){
-            var rad = Context.Radnici.FindAsync(id);
+            var rad = await Context.Radnici.FindAsync(id);
             Context.Remove(rad);
             await Context.SaveChangesAsync();
+        }
+        [Route("VratiRadnika/{id}")]
+        [HttpGet]
+        public async Task<Radnik> VratiRadnika(int id){
+            return await Context.Radnici.FindAsync(id);
         }
     }
 }
