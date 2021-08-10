@@ -67,14 +67,14 @@ namespace BackEnd.Controllers
 
         [Route("UnesiRadnika/{idSektora}")]
         [HttpPost]
-        public async Task<int> UnesiRadnika(int idSektora,[FromBody]Radnik radnik){
+        public async Task<IActionResult> UnesiRadnika(int idSektora,[FromBody]Radnik radnik){
 
             var sekt = await Context.Sektori.FindAsync(idSektora);
             radnik.Sektor = sekt;
             Context.Radnici.Add(radnik);
             await Context.SaveChangesAsync();
             int id = radnik.ID;
-            return id;
+            return Ok(new {value =id});
         }
 
         [Route("IzmeniRadnika")]

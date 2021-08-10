@@ -180,26 +180,24 @@ export class Firma {
             } else if (imeSek.trim().length == 0 || opisSek.trim().length == 0 || budgetSek <= 0 || Number.isNaN(budgetSek)) {
                 alert("Greska prilikom unosa");
             } else {
-                fetch("https://localhost:5001/Firma/UnesiSektor/"+this.id,{
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json"
+                fetch("https://localhost:5001/Firma/UnesiSektor/" + this.id, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
                     },
-                    body:JSON.stringify({
-                        ime:imeSek,
-                        budget:budgetSek,
-                        opis:opisSek
+                    body: JSON.stringify({
+                        ime: imeSek,
+                        budget: budgetSek,
+                        opis: opisSek
                     })
-                }).then(resp =>{
-                    if(resp.ok)
-                    {
+                }).then(resp => {
+                    if (resp.ok) {
                         var sek = new Sektor(imeSek, budgetSek, opisSek);
-                        resp.json().then(x=>{
+                        resp.json().then(x => {
                             x.value;
-                            console.log(x.value);
                             sek.postaviId(x.value);
                         });
-                        
+
                         this.dodajSektor(sek);
                         sek.crtajSebe(this.container);
 
@@ -207,12 +205,12 @@ export class Firma {
                         this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
                         this.update();
                         this.container.removeChild(wholeForm);
-                    }
-                    else if(resp.status = 400){
+                        alert("Uspesno dodat novi sektor");
+                    } else if (resp.status = 400) {
                         alert("400 error");
                     }
                 })
-                
+
             }
         }
         redic.appendChild(elemen);

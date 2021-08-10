@@ -139,18 +139,37 @@ export class Sektor {
                 } else if (imeSektora.trim().length == 0 || opisSek.trim().length == 0 || budgetSek <= 0 || Number.isNaN(budgetSek) || budgetSek < this.minBudget()) {
                     alert("greska");
                 } else {
-                    this.ime = imeSektora;
-                    this.budget = budgetSek;
-                    this.opis = opisSek;
-                    informacije.removeChild(formUnos);
-                    this.form.removeChild(funkcijeAzur);
-                    this.azurirajForm(actualInfo);
-                    this.izgled.innerHTML = this.ime;
-                    this.bigFirma.update();
-                    this.omoguci();
-                    extraRed.classList.remove("nestani");
-                    actualInfo.classList.remove("nestani");
-                    funkcijeSektora.classList.remove("nestani");
+
+                    fetch("https://localhost:5001/Firma/IzmeniSektor", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            id: this.id,
+                            ime: imeSektora,
+                            budget: budgetSek,
+                            opis: opisSek
+                        })
+                    }).then(resp => {
+                        if (resp.ok) {
+                            this.ime = imeSektora;
+                            this.budget = budgetSek;
+                            this.opis = opisSek;
+                            informacije.removeChild(formUnos);
+                            this.form.removeChild(funkcijeAzur);
+                            this.azurirajForm(actualInfo);
+                            this.izgled.innerHTML = this.ime;
+                            this.bigFirma.update();
+                            this.omoguci();
+                            extraRed.classList.remove("nestani");
+                            actualInfo.classList.remove("nestani");
+                            funkcijeSektora.classList.remove("nestani");
+                            alert("Uspesno azuriran sektor!");
+                        } else if (resp.status == 400) {
+                            alert("Error 400 kod azuriranja sektora");
+                        }
+                    })
                 }
             }
             funkcijeAzur.appendChild(elementForme);
@@ -185,14 +204,31 @@ export class Sektor {
         elem.classList.add("deny");
         elem.onclick = ev => {
             if (confirm("Da li ste sigurni da zelite da obrisete sektor?")) {
-                this.bigFirma.sektori = this.bigFirma.sektori.filter(x => {
-                    return x !== this;
-                });
-                nestali.removeChild(this.izgled);
-                nestali.classList.remove("nestani");
-                this.bigFirma.update();
-                this.container.removeChild(this.form);
-                this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
+                console.log(this.id);
+                fetch("https://localhost:5001/Firma/ObrisiSektor/" + this.id, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+
+                    })
+                }).then(resp => {
+                    if (resp.ok) {
+                        this.bigFirma.sektori = this.bigFirma.sektori.filter(x => {
+                            return x !== this;
+                        });
+                        nestali.removeChild(this.izgled);
+                        nestali.classList.remove("nestani");
+                        this.bigFirma.update();
+                        this.container.removeChild(this.form);
+                        this.container.querySelector(".naslovZaSektore").classList.remove("nestani");
+                        alert("Uspesno obrisano!");
+                    } else if (resp.status == 400) {
+                        alert("Error 400 kod brisanja sektora");
+                    }
+                })
+
             }
         }
         funkcijeSektora.appendChild(elem);
@@ -351,16 +387,40 @@ export class Sektor {
             } else if (imeRad.trim().length == 0 || prezimeRad.trim().length == 0 || plataRad <= 0 || Number.isNaN(plataRad) || rankRad == null) {
                 alert("Greska prilikom unosa");
             } else {
-                var rad = new Radnik(imeRad, prezimeRad, rankRad.value, plataRad);
-                this.dodajRadnike(rad);
-                rad.crtajSebe(kanvas);
-                //crtaj.classList.remove("nestani");
-                kanvas.querySelector(".naslovZaRadnike").classList.remove("nestani");
-                kanvas.querySelector(".radnici").classList.remove("nestani");
-                this.update();
-                this.pojaviDugmici();
-                kanvas.removeChild(formNovRadnik);
-                kanvas.removeChild(funkcijeForme);
+
+                fetch("https://localhost:5001/Firma/UnesiRadnika/" + this.id, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        ime: imeRad,
+                        prezime: prezimeRad,
+                        rank: rankRad.value,
+                        plata: plataRad
+                    })
+                }).then(resp => {
+                    if (resp.ok) {
+                        var rad = new Radnik(imeRad, prezimeRad, rankRad.value, plataRad);
+                        resp.json().then(x => {
+                            x.value;
+                            rad.postaviId(x.value);
+                        });
+                        this.dodajRadnike(rad);
+                        rad.crtajSebe(kanvas);
+                        //crtaj.classList.remove("nestani");
+                        kanvas.querySelector(".naslovZaRadnike").classList.remove("nestani");
+                        kanvas.querySelector(".radnici").classList.remove("nestani");
+                        this.update();
+                        this.pojaviDugmici();
+                        kanvas.removeChild(formNovRadnik);
+                        kanvas.removeChild(funkcijeForme);
+                        alert("Uspesno dodat radnik");
+                    } else if (resp.status == 400) {
+                        alert("Error 400 kod dodavanja radnika");
+                    }
+                })
+
             }
         }
         funkcijeForme.appendChild(element);
@@ -385,16 +445,16 @@ export class Sektor {
         (this.form.querySelector(".infoSektora")).querySelector(".budgetSektora").innerHTML = this.izracunajBudgetDostupan() + "/" + this.budget;
     }
     onemoguci() {
-        this.radnici.map(x=>{
-            x.izgled.disabled=true;
+        this.radnici.map(x => {
+            x.izgled.disabled = true;
         })
-        this.form.querySelector(".deoZaRadnike").querySelector(".radnici").querySelector(".specialFontv2").disabled=true;
+        this.form.querySelector(".deoZaRadnike").querySelector(".radnici").querySelector(".specialFontv2").disabled = true;
     }
     omoguci() {
-        this.radnici.map(x=>{
-            x.izgled.disabled=false;
+        this.radnici.map(x => {
+            x.izgled.disabled = false;
         })
-        this.form.querySelector(".deoZaRadnike").querySelector(".radnici").querySelector(".specialFontv2").disabled=false;
+        this.form.querySelector(".deoZaRadnike").querySelector(".radnici").querySelector(".specialFontv2").disabled = false;
     }
     nestaniDugmici() {
         this.form.querySelector(".funkcijeSektora").classList.add("nestani");

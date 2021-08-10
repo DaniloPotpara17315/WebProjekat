@@ -155,20 +155,37 @@ export class Radnik {
                 } else if (imeRad.trim().length == 0 || prezimeRad.trim().length == 0 || plataRad <= 0 || Number.isNaN(plataRad) || rankRad == null) {
                     alert("Greska prilikom unosa");
                 } else {
-
-                    this.ime = imeRad;
-                    this.prezime = prezimeRad;
-                    this.rank = rankRad.value;
-                    this.plata = plataRad;
-                    this.izgled.innerHTML = this.ime + '<br>' + this.prezime;
-                    this.bigSektor.update();
-                    this.azurFormu(zamena);
-                    modulator.removeChild(unosInfo);
-                    kanvas.removeChild(funkRadnika);
-                    kanvas.querySelector(".backRadnik").classList.remove("nestani");
-                    zamena.classList.remove("nestani");
-                    zadnjiDeo.classList.remove("nestani");
-
+                    fetch("https://localhost:5001/Firma/IzmeniRadnika", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            id: this.id,
+                            ime: imeRad,
+                            prezime: prezimeRad,
+                            rank: rankRad.value,
+                            plata: plataRad
+                        })
+                    }).then(resp => {
+                        if (resp.ok) {
+                            this.ime = imeRad;
+                            this.prezime = prezimeRad;
+                            this.rank = rankRad.value;
+                            this.plata = plataRad;
+                            this.izgled.innerHTML = this.ime + '<br>' + this.prezime;
+                            this.bigSektor.update();
+                            this.azurFormu(zamena);
+                            modulator.removeChild(unosInfo);
+                            kanvas.removeChild(funkRadnika);
+                            kanvas.querySelector(".backRadnik").classList.remove("nestani");
+                            zamena.classList.remove("nestani");
+                            zadnjiDeo.classList.remove("nestani");
+                            alert("Uspesno azuriran radnik!");
+                        } else if (resp.status == 400) {
+                            alert("Error 400 kod azuriranja radnika");
+                        }
+                    })
                 }
             }
             funkRadnika.appendChild(dugmici);
@@ -200,18 +217,34 @@ export class Radnik {
         dugmici.classList.add("deny");
         dugmici.onclick = ev => {
             if (confirm("Da li ste sigurni da zelite da obrisete radnika?")) {
-                this.bigSektor.radnici = this.bigSektor.radnici.filter(x => {
-                    return x !== this;
-                });
-                (this.container.querySelector(".radnici")).removeChild(this.izgled);
-                //nestali.removeChild(this.izgled);
-                (this.container.querySelector(".radnici")).classList.remove("nestani");
+                fetch("https://localhost:5001/Firma/ObrisiRadnika/" + this.id, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
 
-                this.bigSektor.update();
-                this.bigSektor.pojaviDugmici();
-                this.container.removeChild(kanvas);
-                kanvas.querySelector(".backRadnik").classList.remove("nestani");
-                this.container.querySelector(".naslovZaRadnike").classList.remove("nestani");
+                    })
+                }).then(resp => {
+                    if (resp.ok) {
+                        this.bigSektor.radnici = this.bigSektor.radnici.filter(x => {
+                            return x !== this;
+                        });
+                        (this.container.querySelector(".radnici")).removeChild(this.izgled);
+                        //nestali.removeChild(this.izgled);
+                        (this.container.querySelector(".radnici")).classList.remove("nestani");
+
+                        this.bigSektor.update();
+                        this.bigSektor.pojaviDugmici();
+                        this.container.removeChild(kanvas);
+                        kanvas.querySelector(".backRadnik").classList.remove("nestani");
+                        this.container.querySelector(".naslovZaRadnike").classList.remove("nestani");
+                        alert("Uspesno obrisan radnik!");
+                    } else if (resp.status == 400) {
+                        alert("Error 400 kod brisanja radnika");
+                    }
+                })
+
             }
         };
         zadnjiDeo.appendChild(dugmici);

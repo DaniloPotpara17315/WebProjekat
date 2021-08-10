@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Web programiranje - Daniwo\\WebProjekat\\Backend\\BackEnd.csproj": {}
+    "D:\\GitWeb\\WebProjekat\\BackEnd\\BackEnd.csproj": {}
   },
   "projects": {
-    "D:\\Web programiranje - Daniwo\\WebProjekat\\Backend\\BackEnd.csproj": {
+    "D:\\GitWeb\\WebProjekat\\BackEnd\\BackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Web programiranje - Daniwo\\WebProjekat\\Backend\\BackEnd.csproj",
+        "projectUniqueName": "D:\\GitWeb\\WebProjekat\\BackEnd\\BackEnd.csproj",
         "projectName": "BackEnd",
-        "projectPath": "D:\\Web programiranje - Daniwo\\WebProjekat\\Backend\\BackEnd.csproj",
-        "packagesPath": "C:\\Users\\Matija\\.nuget\\packages\\",
-        "outputPath": "D:\\Web programiranje - Daniwo\\WebProjekat\\Backend\\obj\\",
+        "projectPath": "D:\\GitWeb\\WebProjekat\\BackEnd\\BackEnd.csproj",
+        "packagesPath": "C:\\Users\\Danilo\\.nuget\\packages\\",
+        "outputPath": "D:\\GitWeb\\WebProjekat\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Matija\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Danilo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
