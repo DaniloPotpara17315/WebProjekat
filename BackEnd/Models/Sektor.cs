@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BackEnd.Models{
     [Table("Sektori")]
@@ -20,6 +21,7 @@ namespace BackEnd.Models{
         [MaxLength(500)]
         public string Opis { get; set; }
 
+        [JsonIgnore]
         public Firma Firma{get;set;}
         public virtual List<Radnik> Radnici{get;set;}
         
