@@ -204,7 +204,6 @@ export class Sektor {
         elem.classList.add("deny");
         elem.onclick = ev => {
             if (confirm("Da li ste sigurni da zelite da obrisete sektor?")) {
-                console.log(this.id);
                 fetch("https://localhost:5001/Firma/ObrisiSektor/" + this.id, {
                     method: "DELETE",
                     headers: {
